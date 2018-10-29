@@ -19,7 +19,7 @@ public class Bank {
     }
 
     public String print() {
-        if (transactions.size() == 0) {
+        if (transactions.isEmpty()) {
             return HEADING;
         }
 

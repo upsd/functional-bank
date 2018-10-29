@@ -14,6 +14,10 @@ public class Bank {
         transactions = new ArrayList<>();
     }
 
+    private Bank(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
     public String print() {
         if (transactions.size() == 0) {
             return HEADING;
@@ -25,12 +29,12 @@ public class Bank {
 
     public Bank deposit(int amount, LocalDate transactionDate) {
         this.transactions.add(new Transaction(amount, transactionDate, TransactionType.DEPOSIT));
-        return this;
+        return new Bank(transactions);
     }
 
     public Bank withdraw(int amount, LocalDate transactionDate) {
         this.transactions.add(new Transaction(amount, transactionDate, TransactionType.WITHDRAWAL));
-        return this;
+        return new Bank(transactions);
     }
 
     private List<String> formattedTransactions() {

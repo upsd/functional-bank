@@ -24,7 +24,12 @@ public class Bank {
     }
 
     public Bank deposit(int amount, LocalDate transactionDate) {
-        this.transactions.add(new Transaction(amount, transactionDate));
+        this.transactions.add(new Transaction(amount, transactionDate, TransactionType.DEPOSIT));
+        return this;
+    }
+
+    public Bank withdraw(int amount, LocalDate transactionDate) {
+        this.transactions.add(new Transaction(amount, transactionDate, TransactionType.WITHDRAWAL));
         return this;
     }
 
@@ -32,7 +37,12 @@ public class Bank {
         final int[] balance = {0};
 
         List<String> formattedTransactions = transactions.stream()
-                .map(t -> String.format("%s || %d.00 || || %d.00", formatDate(t.date()), t.amount(), balance[0] += t.amount()))
+                .map(t -> {
+                    if (t.type() == TransactionType.DEPOSIT)
+                        return String.format("%s || %d.00 || || %d.00", formatDate(t.date()), t.amount(), balance[0] += t.amount());
+
+                    return String.format("%s || || %d.00 || %d.00", formatDate(t.date()), t.amount(), balance[0] -= t.amount());
+                })
                 .collect(Collectors.toList());
 
         Collections.reverse(formattedTransactions);

@@ -36,4 +36,16 @@ public class BankShould {
                 "02/01/2012 || 100.00 || || 300.00\n" +
                 "01/01/2012 || 200.00 || || 200.00"));
     }
+
+    @Test
+    public void print_statement_with_deposit_and_withdrawal() {
+        String statement = new Bank()
+                                .deposit(500, LocalDate.of(2012, 01, 02))
+                                .withdraw(200, LocalDate.of(2012, 01, 05))
+                                .print();
+
+        assertThat(statement, is("date || credit || debit || balance\n" +
+                "05/01/2012 || || 200.00 || 300.00\n" +
+                "02/01/2012 || 500.00 || || 500.00"));
+    }
 }

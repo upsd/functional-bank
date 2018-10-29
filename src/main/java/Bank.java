@@ -39,15 +39,23 @@ public class Bank {
         List<String> formattedTransactions = transactions.stream()
                 .map(t -> {
                     if (t.type() == TransactionType.DEPOSIT)
-                        return String.format("%s || %d.00 || || %d.00", formatDate(t.date()), t.amount(), balance[0] += t.amount());
+                        return getFormatForDeposit(balance, t);
 
-                    return String.format("%s || || %d.00 || %d.00", formatDate(t.date()), t.amount(), balance[0] -= t.amount());
+                    return getFormatForWithdrawal(balance, t);
                 })
                 .collect(Collectors.toList());
 
         Collections.reverse(formattedTransactions);
 
         return formattedTransactions;
+    }
+
+    private String getFormatForWithdrawal(int[] balance, Transaction t) {
+        return String.format("%s || || %d.00 || %d.00", formatDate(t.date()), t.amount(), balance[0] -= t.amount());
+    }
+
+    private String getFormatForDeposit(int[] balance, Transaction t) {
+        return String.format("%s || %d.00 || || %d.00", formatDate(t.date()), t.amount(), balance[0] += t.amount());
     }
 
     private String formatDate(LocalDate date) {
